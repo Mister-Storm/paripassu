@@ -1,0 +1,10 @@
+package com.fernando.paripassu.demo.domain.model.exception;
+
+public class UsuarioNaoAutorizadoException extends RuntimeException{
+
+    private static final long serialVersionUID = 1L;
+
+    public UsuarioNaoAutorizadoException(){
+        super(String.format("Somente usuário com perfil gerente pode chamar senhas"));
+    }
+}
