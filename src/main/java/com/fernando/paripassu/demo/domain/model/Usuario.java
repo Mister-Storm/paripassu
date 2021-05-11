@@ -1,5 +1,6 @@
 package com.fernando.paripassu.demo.domain.model;
 
+import com.fernando.paripassu.demo.domain.enuns.TipoUsuarioEnum;
 import com.fernando.paripassu.demo.domain.model.exception.TipoUsuarioEnumException;
 
 import java.util.Optional;

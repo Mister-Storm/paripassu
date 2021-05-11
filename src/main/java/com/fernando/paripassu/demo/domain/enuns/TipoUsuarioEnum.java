@@ -1,15 +1,15 @@
-package com.fernando.paripassu.demo.domain.model;
+package com.fernando.paripassu.demo.domain.enuns;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-enum TipoUsuarioEnum {
+public enum TipoUsuarioEnum {
 
     GERENTE("gerente"),
     CLIENTE("cliente");
 
-    String tipo;
+    private String tipo;
 
     private static final Map<String, TipoUsuarioEnum> tipoUsuarioValor = new HashMap<>();
     

@@ -53,4 +53,9 @@ public class SenhaNumerica implements Senha<Integer> {
     public Integer senhasNaFila() {
         return senha.size();
     }
+
+    @Override
+    public Boolean isEmpty() {
+        return senha.isEmpty();
+    }
 }
