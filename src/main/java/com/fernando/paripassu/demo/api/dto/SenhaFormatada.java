@@ -1,7 +1,6 @@
-package com.fernando.paripassu.demo.dto;
+package com.fernando.paripassu.demo.api.dto;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
-import com.fernando.paripassu.demo.domain.model.Senha;
 
 public class SenhaFormatada {
 

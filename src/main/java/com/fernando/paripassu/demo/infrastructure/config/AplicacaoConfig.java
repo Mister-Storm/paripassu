@@ -1,6 +1,6 @@
 package com.fernando.paripassu.demo.infrastructure.config;
 
-import com.fernando.paripassu.demo.domain.model.Senha;
+import com.fernando.paripassu.demo.domain.model.SenhaList;
 import com.fernando.paripassu.demo.domain.model.SenhaNumerica;
 import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
 import com.fernando.paripassu.demo.infrastructure.provider.SenhaProvider;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class AplicacaoConfig {
 
     @Bean
-    public Senha senha() {
+    public SenhaList senhaList() {
         return new SenhaNumerica();
     }
 

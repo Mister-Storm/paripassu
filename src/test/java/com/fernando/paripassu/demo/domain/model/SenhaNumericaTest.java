@@ -16,7 +16,7 @@ class SenhaNumericaTest {
     private static final Integer UM_ELEMENTO = 1;
     private static final Integer DOIS_ELEMENTOS = 2;
 
-    Senha<?> senhas;
+    SenhaList<?> senhas;
 
     @BeforeEach
     public void setup() {

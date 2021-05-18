@@ -5,7 +5,7 @@ import com.fernando.paripassu.demo.domain.model.exception.UsuarioNaoAutorizadoEx
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class SenhaNumerica implements Senha<Integer> {
+public class SenhaNumerica implements SenhaList<Integer> {
 
     private static final Integer PRIMEIRO_ITEM = 1;
     Queue<Integer> senha;

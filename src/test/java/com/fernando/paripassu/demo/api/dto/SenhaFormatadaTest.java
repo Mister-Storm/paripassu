@@ -1,4 +1,4 @@
-package com.fernando.paripassu.demo.dto;
+package com.fernando.paripassu.demo.api.dto;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
 import org.junit.jupiter.api.Test;
