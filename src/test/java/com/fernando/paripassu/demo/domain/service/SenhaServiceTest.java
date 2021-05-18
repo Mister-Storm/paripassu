@@ -1,9 +1,11 @@
 package com.fernando.paripassu.demo.domain.service;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
+import com.fernando.paripassu.demo.domain.enuns.TipoUsuarioEnum;
 import com.fernando.paripassu.demo.domain.model.IUsuario;
 import com.fernando.paripassu.demo.domain.model.Senha;
 import com.fernando.paripassu.demo.domain.model.SenhaList;
+import com.fernando.paripassu.demo.domain.model.Usuario;
 import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,7 +93,9 @@ class SenhaServiceTest {
         senhaService.gerar(TipoSenhaEnum.NORMAL);
         senhaService.gerar(TipoSenhaEnum.PREFERENCIAL);
         senhaService.chamar(Mockito.any(IUsuario.class));
-        senhaService.reiniciarSenhas(Mockito.any(IUsuario.class));
+        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.TRUE);
+        when(senhaListNormal.isEmpty()).thenReturn(Boolean.TRUE);
+        senhaService.reiniciarSenhas(Usuario.newInstance("", TipoUsuarioEnum.GERENTE.toString()));
 
         assertTrue(senhaService.ultimaChamada() == null);
 
