@@ -1,6 +1,6 @@
-package com.fernando.paripassu.demo.domain.model.exception;
+package com.fernando.paripassu.demo.domain.exception;
 
-public class TipoUsuarioEnumException extends RuntimeException{
+public class TipoUsuarioEnumException extends Exception{
 
     private static final long serialVersionUID = 1L;
 

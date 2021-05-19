@@ -1,7 +1,7 @@
 package com.fernando.paripassu.demo.domain.model;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoUsuarioEnum;
-import com.fernando.paripassu.demo.domain.model.exception.TipoUsuarioEnumException;
+import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class Usuario implements IUsuario{
         return tipoUsuario.equals(TipoUsuarioEnum.GERENTE);
     }
 
-    public static IUsuario newInstance(String nome, String tipoUsuario) {
+    public static IUsuario newInstance(String nome, String tipoUsuario) throws TipoUsuarioEnumException {
 
         Optional<TipoUsuarioEnum> tipoUsuarioEnum = TipoUsuarioEnum.getTipoUsuarioPorValor(tipoUsuario.toLowerCase());
         if(tipoUsuarioEnum.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.fernando.paripassu.demo.domain.model;
 
-import com.fernando.paripassu.demo.domain.model.exception.UsuarioNaoAutorizadoException;
+import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
+import com.fernando.paripassu.demo.domain.exception.UsuarioNaoAutorizadoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,14 +37,14 @@ class SenhaNumericaTest {
     }
 
     @Test
-    public void deveLancarExcecaoQuandoUsuarioNaoEGerenteEChamar() {
+    public void deveLancarExcecaoQuandoUsuarioNaoEGerenteEChamar() throws TipoUsuarioEnumException {
         IUsuario usuario = Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_CLIENTE);
 
         assertThrows(UsuarioNaoAutorizadoException.class, () -> senhas.chamar(usuario));
     }
 
     @Test
-    public void naoDeveLancarExcecaoQuandoUsuarioEGerenteEChamar() {
+    public void naoDeveLancarExcecaoQuandoUsuarioEGerenteEChamar() throws TipoUsuarioEnumException {
         IUsuario usuario = Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_GERENTE);
         senhas.gerar();
         senhas.gerar();
@@ -53,7 +54,7 @@ class SenhaNumericaTest {
     }
 
     @Test
-    public void deveLDevolverPrimeiroItemDaFilaQuandoChamar() {
+    public void deveLDevolverPrimeiroItemDaFilaQuandoChamar() throws TipoUsuarioEnumException, UsuarioNaoAutorizadoException {
         IUsuario usuario = Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_GERENTE);
         senhas.gerar();
         senhas.gerar();
@@ -71,7 +72,7 @@ class SenhaNumericaTest {
     }
 
     @Test
-    public void deveLancarExcecaoQuandoUsuarioNaoEGerenteEReiniciar() {
+    public void deveLancarExcecaoQuandoUsuarioNaoEGerenteEReiniciar() throws TipoUsuarioEnumException {
         IUsuario usuario = Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_CLIENTE);
         senhas.gerar();
         senhas.gerar();
@@ -81,7 +82,7 @@ class SenhaNumericaTest {
     }
 
     @Test
-    public void naoDeveLancarExcecaoQuandoUsuarioEGerenteEReiniciar() {
+    public void naoDeveLancarExcecaoQuandoUsuarioEGerenteEReiniciar() throws TipoUsuarioEnumException {
         IUsuario usuario = Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_GERENTE);
         senhas.gerar();
         senhas.gerar();

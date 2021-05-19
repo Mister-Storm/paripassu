@@ -1,6 +1,7 @@
 package com.fernando.paripassu.demo.api.dto;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -39,14 +40,24 @@ class SenhaFormatadaTest {
 
     @Test
     public void deveComecarComPASenhaPreferencial() {
-        assertThat(SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.PREFERENCIAL).toString().startsWith("P"),
-                is(Boolean.TRUE));
+        Assertions.assertTrue((SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.PREFERENCIAL).toString().startsWith("P")));
     }
 
     @Test
     public void deveComecarComNASenhaNormal() {
-        assertThat(SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.NORMAL).toString().startsWith("N"),
-                is(Boolean.TRUE));
+        Assertions.assertTrue(SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.NORMAL).toString().startsWith("N"));
+    }
+
+    @Test
+    public void deveRetornarTrueNaSenhaPreferencial() {
+        Assertions.assertTrue(SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.PREFERENCIAL).isSenhaPreferencial());
+    }
+
+    @Test
+    public void deveRetornarFalseNaSenhaNormal() {
+
+        Assertions.assertFalse((SenhaFormatada.of(NUMERO_TESTE_MAIOR_QUE_MIL, TipoSenhaEnum.NORMAL).isSenhaPreferencial()));
+        ;
     }
 
 }

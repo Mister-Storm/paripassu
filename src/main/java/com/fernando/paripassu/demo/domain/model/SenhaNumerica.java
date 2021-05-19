@@ -1,6 +1,6 @@
 package com.fernando.paripassu.demo.domain.model;
 
-import com.fernando.paripassu.demo.domain.model.exception.UsuarioNaoAutorizadoException;
+import com.fernando.paripassu.demo.domain.exception.UsuarioNaoAutorizadoException;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -27,7 +27,7 @@ public class SenhaNumerica implements SenhaList<Integer> {
     }
 
     @Override
-    public Integer chamar(IUsuario usuario) {
+    public Integer chamar(IUsuario usuario) throws UsuarioNaoAutorizadoException {
         if(usuario.isGerente()) {
             return senha.isEmpty() ? null : senha.remove();
         } else {
@@ -41,7 +41,7 @@ public class SenhaNumerica implements SenhaList<Integer> {
     }
 
     @Override
-    public void reiniciarSenhas(IUsuario usuario) {
+    public void reiniciarSenhas(IUsuario usuario) throws UsuarioNaoAutorizadoException {
         if(usuario.isGerente()) {
             senha.clear();
         } else {

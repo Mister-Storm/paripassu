@@ -11,11 +11,11 @@ public enum TipoSenhaEnum {
 
     private String tipo;
 
-    private static final Map<TipoSenhaEnum, String> tipoSenhaValor = new HashMap<>();
+    private static final Map<String, TipoSenhaEnum> tipoSenhaValor = new HashMap<>();
 
     static {
         for (TipoSenhaEnum tipoSenha : TipoSenhaEnum.values()) {
-            tipoSenhaValor.put(tipoSenha, tipoSenha.getValor());
+            tipoSenhaValor.put(tipoSenha.getValor(), tipoSenha);
         }
     }
 
@@ -25,6 +25,11 @@ public enum TipoSenhaEnum {
 
     public String getValor() {
         return tipo;
+    }
+
+    public static Optional<TipoSenhaEnum> getTipoSenhaPorValor(String tipoSenha) {
+        return tipoSenhaValor.get(tipoSenha) == null ? Optional.empty() :
+                Optional.of(tipoSenhaValor.get(tipoSenha));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.fernando.paripassu.demo.domain.model;
 
-import com.fernando.paripassu.demo.domain.model.exception.TipoUsuarioEnumException;
+import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,13 +29,13 @@ class UsuarioTest {
     }
 
     @Test
-    public void deveRetornarTrueQuandoForGerente() {
+    public void deveRetornarTrueQuandoForGerente() throws TipoUsuarioEnumException {
         IUsuario usuario= Usuario.newInstance(NOME_USUARIO, TIPO_USUARIO_VALIDO_GERENTE);
         assertTrue(usuario.isGerente());
     }
 
     @Test
-    public void naoDeveRetornarTrueQuandoNaoForGerente() {
+    public void naoDeveRetornarTrueQuandoNaoForGerente() throws TipoUsuarioEnumException {
         IUsuario usuario= Usuario.newInstance(NOME_USUARIO, TIPO_USUARIO_VALIDO_CLIENTE);
         assertFalse(usuario.isGerente());
     }

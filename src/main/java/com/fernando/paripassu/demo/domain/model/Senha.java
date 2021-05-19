@@ -1,17 +1,30 @@
 package com.fernando.paripassu.demo.domain.model;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
+import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
+import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Senha<T> {
 
     private final T senha;
     private final TipoSenhaEnum tipoSenha;
 
-    public Senha(T senha, TipoSenhaEnum tipoSenha) {
+    private Senha(T senha, TipoSenhaEnum tipoSenha) {
         this.senha = senha;
         this.tipoSenha = tipoSenha;
+    }
+
+    public static <T> Senha<T> newInstance(T senha, String tipoSenha) throws TipoUsuarioEnumException, TipoSenhaEnumException {
+
+        Optional<TipoSenhaEnum> tipoUsuarioEnum = TipoSenhaEnum.getTipoSenhaPorValor(tipoSenha.toUpperCase());
+        if(tipoUsuarioEnum.isEmpty()) {
+            throw new TipoSenhaEnumException(tipoSenha);
+        }
+
+        return new Senha(senha, tipoUsuarioEnum.get());
     }
 
     public T getSenha() {
@@ -21,6 +34,7 @@ public class Senha<T> {
     public Boolean isSenhaPreferencial() {
         return tipoSenha.equals(TipoSenhaEnum.PREFERENCIAL);
     }
+
 
     @Override
     public boolean equals(Object o) {
