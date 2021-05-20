@@ -20,7 +20,7 @@ public class SenhaNumerica implements SenhaList<Integer> {
             retorno = PRIMEIRO_ITEM;
             senha.add(PRIMEIRO_ITEM);
         } else {
-            retorno = senha.peek() + 1;
+            retorno = senha.size()+1;
             senha.add(retorno);
         }
         return retorno;
@@ -58,4 +58,5 @@ public class SenhaNumerica implements SenhaList<Integer> {
     public Boolean isEmpty() {
         return senha.isEmpty();
     }
+
 }

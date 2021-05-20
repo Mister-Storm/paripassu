@@ -12,14 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+
 
 class SenhaServiceTest {
 
-    @Mock
-    private SenhaNumerica senhaListNormal;
-    @Mock
-    private SenhaNumerica senhaListPreferencial;
     @Mock
     private SenhaRepository senhaRepository;
 
@@ -27,19 +23,19 @@ class SenhaServiceTest {
     @InjectMocks
     private SenhaService senhaService;
 
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void deveGerarSenhaPreferencial() throws TipoUsuarioEnumException, TipoSenhaEnumException {
+    public void deveGerarSenhaPreferencial() throws TipoUsuarioEnumException, TipoSenhaEnumException, UsuarioNaoAutorizadoException {
 
         Senha<Integer> senha = (Senha<Integer>) senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
 
         assertTrue(senha != null);
         assertTrue(senha.isSenhaPreferencial());
+        assertTrue(senhaService.senhasNAFila().equals(1));
 
     }
 
@@ -50,11 +46,13 @@ class SenhaServiceTest {
 
         assertTrue(senha != null);
         assertFalse(senha.isSenhaPreferencial());
+        assertTrue(senhaService.senhasNAFila().equals(1));
 
     }
 
     @Test
     public void deveLAncarExcecaoQuandoTipoSenhaForIncorreto() {
+
         assertThrows(TipoSenhaEnumException.class, () -> senhaService.gerar("Y"));
     }
 
@@ -62,9 +60,9 @@ class SenhaServiceTest {
     public void deveRetornarSenhaPreferencialQuandoHouverClientePreferencialNaFilaDeAtendimento()
             throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.FALSE);
-        when(senhaListPreferencial.chamar(Mockito.any(IUsuario.class))).thenReturn(1);
-        Senha<Integer> senha = senhaService.chamar(Mockito.any(IUsuario.class));
+        senhaService.gerar("P");
+        Senha<Integer> senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
+
         assertTrue(senha != null);
         assertTrue(senha.isSenhaPreferencial());
     }
@@ -73,9 +71,7 @@ class SenhaServiceTest {
     public void deveRetornarSenhaNormalQuandoNaoHouverClientePreferencialNaFilaDeAtendimento()
             throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.TRUE);
-        when(senhaListPreferencial.chamar(Mockito.any(IUsuario.class))).thenReturn(1);
-        Senha<Integer> senha = senhaService.chamar(Mockito.any(IUsuario.class));
+        Senha<Integer> senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
         assertTrue(senha != null);
         assertFalse(senha.isSenhaPreferencial());
     }
@@ -83,9 +79,8 @@ class SenhaServiceTest {
     @Test
     public void deveRetornarUltimoNumeroChamado()
             throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
-        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.TRUE);
-        when(senhaListPreferencial.chamar(Mockito.any(IUsuario.class))).thenReturn(1);
-        Senha<Integer> senha = senhaService.chamar(Mockito.any(IUsuario.class));
+
+        Senha<Integer> senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
         Senha<Integer> ultimaChamada = senhaService.ultimaChamada();
         assertTrue(senha != null);
         assertFalse(senha.isSenhaPreferencial());
@@ -100,9 +95,8 @@ class SenhaServiceTest {
         senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
         senhaService.gerar(TipoSenhaEnum.NORMAL.getValor());
         senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
-        senhaService.chamar(Mockito.any(IUsuario.class));
-        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.TRUE);
-        when(senhaListNormal.isEmpty()).thenReturn(Boolean.TRUE);
+        senhaService.chamar(Usuario.newInstance("", TipoUsuarioEnum.GERENTE.toString()));
+
         senhaService.reiniciarSenhas(Usuario.newInstance("", TipoUsuarioEnum.GERENTE.toString()));
 
         assertTrue(senhaService.ultimaChamada() == null);
@@ -112,8 +106,7 @@ class SenhaServiceTest {
     @Test
     public void deveLancarExcecaoQuandoUsuarioNaoAutorizadoChamarSenha() throws UsuarioNaoAutorizadoException {
 
-        when(senhaListPreferencial.isEmpty()).thenReturn(Boolean.TRUE);
-        when(senhaListNormal.chamar(Mockito.any(IUsuario.class))).thenCallRealMethod();
+
 
         assertThrows(UsuarioNaoAutorizadoException.class,
                 () -> senhaService.chamar(Usuario.newInstance("", "cliente")));

@@ -6,17 +6,28 @@ import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
 import com.fernando.paripassu.demo.infrastructure.provider.SenhaProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
+
+import javax.servlet.Filter;
+
 
 @Configuration
 public class AplicacaoConfig {
 
     @Bean
-    public SenhaList senhaList() {
-        return new SenhaNumerica();
+    public SenhaRepository senhaRepository() {
+        return new SenhaProvider();
     }
 
     @Bean
-    public SenhaRepository senhaRepository() {
-        return new SenhaProvider();
+    public Filter getCharacterEncodingFilter() {
+
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+
+        encodingFilter.setEncoding("UTF-8");
+        encodingFilter.setForceEncoding(true);
+
+        return encodingFilter;
+
     }
 }
