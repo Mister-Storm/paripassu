@@ -13,7 +13,7 @@ import org.mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+//TODO criar provider e método para recuperar senhas caso o sistema caia.
 class SenhaServiceTest {
 
     @Mock
@@ -77,13 +77,28 @@ class SenhaServiceTest {
     }
 
     @Test
-    public void deveRetornarUltimoNumeroChamado()
+    public void deveRetornarUltimoNumeroChamadoDaSenhaNormal()
             throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
 
+        senhaService.gerar(TipoSenhaEnum.NORMAL.getValor());
         Senha<Integer> senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
-        Senha<Integer> ultimaChamada = senhaService.ultimaChamada();
+        Senha<Integer> ultimaChamada = senhaService.ultimaChamadaNormal();
+
         assertTrue(senha != null);
         assertFalse(senha.isSenhaPreferencial());
+        assertTrue(senha.equals(ultimaChamada));
+    }
+
+    @Test
+    public void deveRetornarUltimoNumeroChamadoDaSenhaPreferencial()
+            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
+
+        senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
+        Senha<Integer> senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
+        Senha<Integer> ultimaChamada = senhaService.ultimaChamadaPreferencial();
+
+        assertTrue(senha != null);
+        assertTrue(senha.isSenhaPreferencial());
         assertTrue(senha.equals(ultimaChamada));
     }
 
@@ -99,7 +114,7 @@ class SenhaServiceTest {
 
         senhaService.reiniciarSenhas(Usuario.newInstance("", TipoUsuarioEnum.GERENTE.toString()));
 
-        assertTrue(senhaService.ultimaChamada() == null);
+        assertTrue(senhaService.ultimaChamadaNormal() == null);
 
     }
 

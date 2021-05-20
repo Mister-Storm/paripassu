@@ -24,6 +24,8 @@ public class SenhaService {
     @Inject
     private SenhaRepository senhaRepository;
 
+    private Senha<?> ultimaChamadaNormal;
+    private Senha<?> ultimaChamadaPreferencial;
     private Senha<?> ultimaChamada;
 
     @Autowired
@@ -50,22 +52,33 @@ public class SenhaService {
 
     public Senha chamar(IUsuario usuario) throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        ultimaChamada = senhaListPreferencial.isEmpty() ?
-                Senha.newInstance((Integer) senhaListNormal.chamar(usuario), TipoSenhaEnum.NORMAL.getValor())
-                : Senha.newInstance((Integer) senhaListPreferencial.chamar(usuario), TipoSenhaEnum.PREFERENCIAL.getValor());
+        if(senhaListPreferencial.isEmpty()) {
+            ultimaChamadaNormal = Senha.newInstance((Integer) senhaListNormal.chamar(usuario),
+                    TipoSenhaEnum.NORMAL.getValor());
+            ultimaChamada = ultimaChamadaNormal;
 
+        } else {
+            ultimaChamadaPreferencial = Senha.newInstance((Integer) senhaListPreferencial.chamar(usuario),
+                    TipoSenhaEnum.PREFERENCIAL.getValor());
+            ultimaChamada = ultimaChamadaPreferencial;
+        }
         return ultimaChamada;
+
     }
 
 
-    public Senha ultimaChamada() {
-        return ultimaChamada;
+    public Senha ultimaChamadaNormal() {
+        return ultimaChamadaNormal;
+    }
+
+    public Senha ultimaChamadaPreferencial() {
+        return ultimaChamadaPreferencial;
     }
 
     public void reiniciarSenhas(IUsuario usuario) throws UsuarioNaoAutorizadoException {
             senhaListNormal.reiniciarSenhas(usuario);
             senhaListPreferencial.reiniciarSenhas(usuario);
-            ultimaChamada = senhaListNormal.isEmpty() && senhaListPreferencial.isEmpty() ? null : ultimaChamada;
+            ultimaChamadaNormal = senhaListNormal.isEmpty() && senhaListPreferencial.isEmpty() ? null : ultimaChamadaNormal;
     }
 
     public Integer senhasNAFila() {

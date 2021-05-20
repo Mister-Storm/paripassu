@@ -2,6 +2,7 @@ package com.fernando.paripassu.demo.api;
 
 import com.fernando.paripassu.demo.api.dto.SenhaFormatada;
 import com.fernando.paripassu.demo.api.dto.SenhaJson;
+import com.fernando.paripassu.demo.api.dto.TipoSenhaInput;
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
 import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
 import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
@@ -22,19 +23,22 @@ public class SenhaControler {
     SenhaService service;
 
     @PostMapping
-    public ResponseEntity<?> gerar(@RequestBody String tipoDeSenha) throws TipoUsuarioEnumException, TipoSenhaEnumException {
+    public ResponseEntity<?> gerar(@RequestBody TipoSenhaInput tipoDeSenha) throws TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        Senha<Integer> senha = (Senha<Integer>) service.gerar(tipoDeSenha);
+        Senha<Integer> senha = (Senha<Integer>) service.gerar(tipoDeSenha.getTipoDeSenha());
         SenhaFormatada senhaFormatada= SenhaFormatada.of((Integer)senha.getSenha(), senha.isSenhaPreferencial() ? TipoSenhaEnum.PREFERENCIAL :
                 TipoSenhaEnum.NORMAL);
         return new ResponseEntity<>(new SenhaJson(senhaFormatada.toString()), HttpStatus.CREATED);
 
     }
 
+    //TODO criar UsuarioInput e corrigir demais campos.
+
     @GetMapping
     public ResponseEntity<?> chamar(@RequestBody IUsuario usuario) throws UsuarioNaoAutorizadoException, TipoSenhaEnumException, TipoUsuarioEnumException {
 
         return new ResponseEntity(service.chamar(usuario), HttpStatus.OK);
     }
+
 
 }
