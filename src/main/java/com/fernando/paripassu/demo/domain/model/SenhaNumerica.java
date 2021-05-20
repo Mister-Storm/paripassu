@@ -9,21 +9,22 @@ public class SenhaNumerica implements SenhaList<Integer> {
 
     private static final Integer PRIMEIRO_ITEM = 1;
     Queue<Integer> senha;
+    Integer ultimoCriado;
 
     public SenhaNumerica() {
         senha = new ArrayDeque<>();
     }
     @Override
     public Integer gerar() {
-        Integer retorno;
+
         if(senha.isEmpty()) {
-            retorno = PRIMEIRO_ITEM;
+            ultimoCriado = PRIMEIRO_ITEM;
             senha.add(PRIMEIRO_ITEM);
         } else {
-            retorno = senha.size()+1;
-            senha.add(retorno);
+            ultimoCriado++;
+            senha.add(ultimoCriado);
         }
-        return retorno;
+        return ultimoCriado;
     }
 
     @Override
@@ -46,6 +47,14 @@ public class SenhaNumerica implements SenhaList<Integer> {
             senha.clear();
         } else {
             throw new UsuarioNaoAutorizadoException();
+        }
+    }
+
+    @Override
+    public void restaurar(Integer inicial, Integer size) {
+        for(int i = 0; i < size; i++) {
+            inicial++;
+            senha.add(inicial);
         }
     }
 

@@ -12,6 +12,7 @@ public interface SenhaList<T> {
     T chamar(IUsuario usuario) throws UsuarioNaoAutorizadoException;
     T ultimaChamada();
     void reiniciarSenhas(IUsuario usuario) throws UsuarioNaoAutorizadoException;
+    void restaurar(T inicial, Integer size);
     Integer senhasNaFila();
     Boolean isEmpty();
 

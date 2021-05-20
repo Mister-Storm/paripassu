@@ -1,5 +1,6 @@
 package com.fernando.paripassu.demo.domain.repository;
 
+import com.fernando.paripassu.demo.domain.model.IUsuario;
 import com.fernando.paripassu.demo.domain.model.Senha;
 
 import javax.inject.Named;
@@ -7,6 +8,13 @@ import javax.inject.Named;
 @Named
 public interface SenhaRepository {
 
-    Senha salvar(Senha senha);
+    Senha salvarUltimaGerada(Senha senha);
 
+    void salvarUltimaChamada(Senha senha);
+
+    void reiniciarSenhas(IUsuario usuario);
+
+    Senha recuperarUltimaSenhaNormalChamada();
+
+    Integer recuperarTamanhoSenhaNormal();
 }

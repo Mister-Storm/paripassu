@@ -16,8 +16,11 @@ class SenhaNumericaTest {
     private static final Integer ZERO_ELEMENTOS = 0;
     private static final Integer UM_ELEMENTO = 1;
     private static final Integer DOIS_ELEMENTOS = 2;
+    private static final Integer ULTIMO_ELEMENTO_CHAMADO_NA_FILA = 8;
+    private static final Integer PRIMEIRO_ELEMENTO_APOS_RESTAURACAO = 9;
+    private static final Integer TAMANHO_DA_FILA = 4;
 
-    SenhaList<?> senhas;
+    SenhaList<Integer> senhas;
 
     @BeforeEach
     public void setup() {
@@ -26,14 +29,14 @@ class SenhaNumericaTest {
 
     @Test
     public void deveGerarSenhaQuandoFilaVazia() {
-        assertTrue(senhas.gerar().equals(ELEMENTO_UM));
+        assertEquals(senhas.gerar(), ELEMENTO_UM);
     }
 
     @Test
     public void deveGerarSenhaQuandoFilaNaoVazia() {
         senhas.gerar();
 
-        assertTrue(senhas.gerar().equals(ELEMENTO_DOIS));
+        assertEquals(senhas.gerar(), ELEMENTO_DOIS);
     }
 
     @Test
@@ -67,7 +70,7 @@ class SenhaNumericaTest {
         senhas.gerar();
         senhas.gerar();
 
-        assertTrue(senhas.ultimaChamada().equals(ELEMENTO_UM));
+        assertEquals(senhas.ultimaChamada(), ELEMENTO_UM);
         assertThat(senhas.senhasNaFila(), is(DOIS_ELEMENTOS));
     }
 
@@ -89,6 +92,14 @@ class SenhaNumericaTest {
 
         assertDoesNotThrow(() -> senhas.reiniciarSenhas(usuario));
         assertThat(senhas.senhasNaFila(), is(ZERO_ELEMENTOS));
+    }
+
+    @Test
+    public void deveRestaurarFila() throws TipoUsuarioEnumException, UsuarioNaoAutorizadoException {
+        senhas.restaurar(ULTIMO_ELEMENTO_CHAMADO_NA_FILA, TAMANHO_DA_FILA);
+        assertThat(senhas.senhasNaFila(), is(TAMANHO_DA_FILA));
+        assertThat(senhas.chamar(Usuario.newInstance(UsuarioTest.NOME_USUARIO, UsuarioTest.TIPO_USUARIO_VALIDO_GERENTE))
+        , is(PRIMEIRO_ELEMENTO_APOS_RESTAURACAO));
     }
 
 }
