@@ -5,7 +5,7 @@ import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 
 import java.util.Optional;
 
-public class Usuario implements IUsuario{
+public class Usuario implements IUsuario {
 
     private TipoUsuarioEnum tipoUsuario;
     private String nome;

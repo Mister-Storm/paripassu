@@ -2,6 +2,7 @@ package com.fernando.paripassu.demo.domain.service;
 
 import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
 import com.fernando.paripassu.demo.domain.enuns.TipoUsuarioEnum;
+import com.fernando.paripassu.demo.domain.exception.SenhaNaoIniciadaException;
 import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
 import com.fernando.paripassu.demo.domain.model.*;
 import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
@@ -30,7 +31,6 @@ class SenhaServiceTest {
     @Test
     public void deveGerarSenhaPreferencial() throws TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        when(senhaRepository.salvarUltimaGerada(any(Senha.class))).thenReturn(null);
         Senha<?> senha = senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
 
         assertNotNull(senha);
@@ -60,7 +60,7 @@ class SenhaServiceTest {
     public void deveRetornarSenhaPreferencialQuandoHouverClientePreferencialNaFilaDeAtendimento()
             throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
 
-        senhaService.gerar("P");
+        senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
         var senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
 
         assertNotNull(senha);
@@ -78,11 +78,11 @@ class SenhaServiceTest {
 
     @Test
     public void deveRetornarUltimoNumeroChamadoDaSenhaNormal()
-            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
+            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException, SenhaNaoIniciadaException {
 
         senhaService.gerar(TipoSenhaEnum.NORMAL.getValor());
         var senha = senhaService.chamar(Usuario.newInstance("", "gerente"));
-        var ultimaChamada = senhaService.ultimaChamadaNormal();
+        var ultimaChamada = senhaService.ultimaChamada(TipoSenhaEnum.NORMAL.getValor());
 
         assertNotNull(senha);
         assertFalse(senha.isSenhaPreferencial());
@@ -91,11 +91,11 @@ class SenhaServiceTest {
 
     @Test
     public void deveRetornarUltimoNumeroChamadoDaSenhaPreferencial()
-            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
+            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException, SenhaNaoIniciadaException {
 
         senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
         var senha =senhaService.chamar(Usuario.newInstance("", "gerente"));
-        var ultimaChamada = senhaService.ultimaChamadaPreferencial();
+        var ultimaChamada = senhaService.ultimaChamada(TipoSenhaEnum.PREFERENCIAL.getValor());
 
         assertNotNull(senha);
         assertTrue(senha.isSenhaPreferencial());
@@ -104,7 +104,7 @@ class SenhaServiceTest {
 
     @Test
     public void deveLimparAsListasDeSenhas()
-            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException {
+            throws UsuarioNaoAutorizadoException, TipoUsuarioEnumException, TipoSenhaEnumException, SenhaNaoIniciadaException {
 
         senhaService.gerar(TipoSenhaEnum.NORMAL.getValor());
         senhaService.gerar(TipoSenhaEnum.PREFERENCIAL.getValor());
@@ -114,18 +114,15 @@ class SenhaServiceTest {
 
         senhaService.reiniciarSenhas(Usuario.newInstance("", TipoUsuarioEnum.GERENTE.toString()));
 
-        assertNull(senhaService.ultimaChamadaNormal());
+        assertThrows(SenhaNaoIniciadaException.class, ()-> senhaService.ultimaChamada(TipoSenhaEnum.NORMAL.getValor()));
 
     }
 
     @Test
     public void deveLancarExcecaoQuandoUsuarioNaoAutorizadoChamarSenha() {
 
-
-
         assertThrows(UsuarioNaoAutorizadoException.class,
                 () -> senhaService.chamar(Usuario.newInstance("", "cliente")));
     }
-
 
 }

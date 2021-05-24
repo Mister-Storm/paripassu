@@ -56,17 +56,4 @@ class SenhaControlerTest {
                         containsString("O tipo S não é um tipo de senha válido")));
     }
 
-//    @Test
-    public void deveRetornarUltimaSenha() throws Exception {
-
-        mockMvc.perform(post("/senhas").content(PAYLOAD_NORMAL).contentType(MediaType.APPLICATION_JSON));
-        mockMvc.perform(post("/senhas").content(PAYLOAD_PREFERENCIAL).contentType(MediaType.APPLICATION_JSON));
-        mockMvc.perform(post("/senhas").content(PAYLOAD_NORMAL).contentType(MediaType.APPLICATION_JSON));
-        mockMvc.perform(get("/senhas")
-                .content(Usuario.newInstance("", "gerente").toString()))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("P")));
-    }
-
-
 }

@@ -1,6 +1,6 @@
 package com.fernando.paripassu.demo.domain.exception;
 
-public class UsuarioNaoAutorizadoException extends Exception{
+public class UsuarioNaoAutorizadoException extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
 

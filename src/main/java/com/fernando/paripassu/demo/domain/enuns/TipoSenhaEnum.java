@@ -28,8 +28,9 @@ public enum TipoSenhaEnum {
     }
 
     public static Optional<TipoSenhaEnum> getTipoSenhaPorValor(String tipoSenha) {
-        return tipoSenhaValor.get(tipoSenha) == null ? Optional.empty() :
-                Optional.of(tipoSenhaValor.get(tipoSenha));
+        String tipoSenhaUC = tipoSenha.toUpperCase();
+        return tipoSenhaValor.get(tipoSenhaUC) == null ? Optional.empty() :
+                Optional.of(tipoSenhaValor.get(tipoSenhaUC));
     }
 
 }
