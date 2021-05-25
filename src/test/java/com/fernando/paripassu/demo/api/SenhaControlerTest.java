@@ -1,16 +1,17 @@
 package com.fernando.paripassu.demo.api;
 
-import com.fernando.paripassu.demo.domain.model.Usuario;
+import com.fernando.paripassu.demo.domain.model.Senha;
+import com.fernando.paripassu.demo.domain.service.SenhaService;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.Matchers.containsString;
-
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +23,9 @@ class SenhaControlerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private SenhaService senhaService;
+
     private static final String PAYLOAD_PREFERENCIAL = "{ \"tipoDeSenha\": \"p\" }";
     private static final String PAYLOAD_NORMAL = "{\"tipoDeSenha\": \"n\"}";
     private static final String PAYLOAD_INVALIDO = "{\"tipoDeSenha\": \"S\"}";
@@ -29,6 +33,8 @@ class SenhaControlerTest {
     @Test
     public void deveRetornarNovaSenhaPreferencial() throws Exception {
 
+        Mockito.doReturn(Senha.newInstance(1, "P"))
+                .when(senhaService).gerar(Mockito.any(String.class));
 
         mockMvc.perform(post("/senhas")
                 .content(PAYLOAD_PREFERENCIAL)
@@ -39,6 +45,9 @@ class SenhaControlerTest {
 
     @Test
     public void deveRetornarNovaSenhaNormal() throws Exception {
+
+        Mockito.doReturn(Senha.newInstance(1, "N"))
+                .when(senhaService).gerar(Mockito.any(String.class));
 
         mockMvc.perform(post("/senhas").content(PAYLOAD_NORMAL)
                 .contentType(MediaType.APPLICATION_JSON))
