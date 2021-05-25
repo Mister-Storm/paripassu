@@ -74,8 +74,8 @@ public class SenhaService {
     public void reiniciarSenhas(IUsuario usuario) {
             senhaListNormal.reiniciarSenhas(usuario);
             senhaListPreferencial.reiniciarSenhas(usuario);
-            ultimaChamadaNormal = (senhaListNormal.isEmpty() && senhaListPreferencial.isEmpty()) ? null
-                    : ultimaChamadaNormal;
+            ultimaChamadaNormal =  null;
+            ultimaChamadaPreferencial = null;
             senhaRepository.reiniciarSenhas(usuario);
     }
 

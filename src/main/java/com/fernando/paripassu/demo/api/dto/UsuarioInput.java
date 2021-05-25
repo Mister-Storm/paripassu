@@ -1,8 +1,12 @@
 package com.fernando.paripassu.demo.api.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class UsuarioInput {
 
+    @NotBlank(message = "Campo nome é obrigatório")
     private String nome;
+    @NotBlank(message = "Campo tipoUsuario é obrigatório")
     private String tipoUsuario;
 
     public String getNome() {

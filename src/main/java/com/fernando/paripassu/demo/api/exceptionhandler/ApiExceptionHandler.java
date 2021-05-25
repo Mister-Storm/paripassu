@@ -5,6 +5,7 @@ import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
 import com.fernando.paripassu.demo.domain.exception.UsuarioNaoAutorizadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -27,6 +28,13 @@ public class ApiExceptionHandler {
         StandardError err = new StandardError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(),
                 System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(),
+                System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
 }
