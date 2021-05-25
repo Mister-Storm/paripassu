@@ -49,6 +49,7 @@ public class SenhaService {
             senha = Senha.newInstance(numero, tipoSenhaEnum);
             LOGGER.info("Senha normal gerada: {}", numero);
         }
+        senhaRepository.salvarUltimaChamada(senha);
 
         return senha;
     }
@@ -60,13 +61,16 @@ public class SenhaService {
             ultimaChamadaNormal = Senha.newInstance(senhaListNormal.chamar(usuario),
                     TipoSenhaEnum.NORMAL.getValor());
             ultimaChamada = ultimaChamadaNormal;
+            senhaRepository.salvarTamanhoSenhaNormal(senhaListNormal.senhasNaFila());
 
         } else {
             ultimaChamadaPreferencial = Senha.newInstance(senhaListPreferencial.chamar(usuario),
                     TipoSenhaEnum.PREFERENCIAL.getValor());
             ultimaChamada = ultimaChamadaPreferencial;
+            senhaRepository.salvarTamanhoSenhaPreferencial(senhaListPreferencial.senhasNaFila());
         }
         senhaRepository.salvarUltimaChamada(ultimaChamada);
+
         return ultimaChamada;
 
     }

@@ -12,6 +12,10 @@ public interface SenhaRepository {
 
     void salvarUltimaChamada(Senha<?> senha);
 
+    void salvarTamanhoSenhaNormal(Integer tamanho);
+
+    void salvarTamanhoSenhaPreferencial(Integer tamanho);
+
     void reiniciarSenhas(IUsuario usuario);
 
     Senha recuperarUltimaSenhaNormalChamada();

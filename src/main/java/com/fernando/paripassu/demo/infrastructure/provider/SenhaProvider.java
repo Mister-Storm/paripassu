@@ -15,6 +15,16 @@ public class SenhaProvider implements SenhaRepository {
     }
 
     @Override
+    public void salvarTamanhoSenhaNormal(Integer tamanho) {
+
+    }
+
+    @Override
+    public void salvarTamanhoSenhaPreferencial(Integer tamanho) {
+
+    }
+
+    @Override
     public void reiniciarSenhas(IUsuario usuario) {
 
     }
