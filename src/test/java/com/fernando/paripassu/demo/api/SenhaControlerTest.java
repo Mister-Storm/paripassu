@@ -1,5 +1,6 @@
 package com.fernando.paripassu.demo.api;
 
+import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
 import com.fernando.paripassu.demo.domain.model.Senha;
 import com.fernando.paripassu.demo.domain.service.SenhaService;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -58,6 +60,8 @@ class SenhaControlerTest {
     @Test
     public void deveRetornarErroComTipoDeSenhaIncorreto() throws Exception {
 
+        Mockito.doThrow(new TipoSenhaEnumException("S")).when(senhaService)
+                .gerar(Mockito.any(String.class));
         mockMvc.perform(post("/senhas").content(PAYLOAD_INVALIDO)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
