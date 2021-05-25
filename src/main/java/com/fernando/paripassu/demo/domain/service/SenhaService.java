@@ -44,12 +44,15 @@ public class SenhaService {
             Integer numero = senhaListPreferencial.gerar();
             senha =  Senha.newInstance(numero, tipoSenhaEnum);
             LOGGER.info("Senha preferencial gerada: {}", numero);
+            senhaRepository.salvarTamanhoSenhaPreferencial(senhaListPreferencial.senhasNaFila());
         } else {
             Integer numero = senhaListNormal.gerar();
             senha = Senha.newInstance(numero, tipoSenhaEnum);
             LOGGER.info("Senha normal gerada: {}", numero);
+            senhaRepository.salvarTamanhoSenhaNormal(senhaListNormal.senhasNaFila());
         }
         senhaRepository.salvarUltimaChamada(senha);
+
 
         return senha;
     }

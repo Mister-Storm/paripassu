@@ -56,7 +56,7 @@ public class SenhaNumerica implements SenhaList<Integer> {
             inicial++;
             senha.add(inicial);
         }
-        ultimoCriado = inicial+size;
+        ultimoCriado = inicial;
     }
 
     @Override

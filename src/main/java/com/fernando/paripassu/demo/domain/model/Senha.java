@@ -4,10 +4,11 @@ import com.fernando.paripassu.demo.domain.enuns.TipoSenhaEnum;
 import com.fernando.paripassu.demo.domain.exception.TipoSenhaEnumException;
 import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Senha<T> {
+public class Senha<T> implements Serializable {
 
     private final T senha;
     private final TipoSenhaEnum tipoSenha;

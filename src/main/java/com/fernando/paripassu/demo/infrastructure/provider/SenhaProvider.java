@@ -6,17 +6,42 @@ import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 import com.fernando.paripassu.demo.domain.model.IUsuario;
 import com.fernando.paripassu.demo.domain.model.Senha;
 import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 
 public class SenhaProvider implements SenhaRepository {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SenhaProvider.class);
+
+    private ObjectOutputStream output;
+
+    public SenhaProvider() {
+        File file = new File("/home/fernando/Downloads/senhasProvider.txt");
+        try {
+            output = new ObjectOutputStream(new FileOutputStream(file));
+        } catch (IOException e ) {
+            LOGGER.error(e.getMessage());
+            // lançar exceção aqui.....
+        }
+    }
     @Override
     public void salvarUltimaChamada(Senha<?> senha) {
-
+        try {
+            output.writeObject(senha);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     @Override
     public void salvarTamanhoSenhaNormal(Integer tamanho) {
-
+        try {
+            output.writeObject(tamanho);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     @Override
