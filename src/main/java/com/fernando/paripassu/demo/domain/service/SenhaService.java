@@ -11,11 +11,9 @@ import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Optional;
-
 
 @Named
 public class SenhaService {
@@ -90,7 +88,6 @@ public class SenhaService {
         return senhaListPreferencial.senhasNaFila() + senhaListNormal.senhasNaFila();
     }
 
-    @PostConstruct
     private void restaurarFilas() {
 
         Integer  tamanhoSenhaNormal = senhaRepository.recuperarTamanhoSenhaNormal();
