@@ -5,6 +5,8 @@ import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 import com.fernando.paripassu.demo.domain.model.IUsuario;
 import com.fernando.paripassu.demo.domain.model.Senha;
 
+import java.io.FileNotFoundException;
+
 public interface SenhaRepository {
 
     void iniciarFile();

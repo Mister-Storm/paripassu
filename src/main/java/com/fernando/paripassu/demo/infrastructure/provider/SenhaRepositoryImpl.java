@@ -27,22 +27,13 @@ public class SenhaRepositoryImpl implements SenhaRepository {
     @Override
     public void salvarUltimaChamada(Senha<?> senha) {
 
+        salvaObjeto(senha);
 
-
-        try (ObjectOutputStream output= new ObjectOutputStream(new FileOutputStream(file))){
-            output.writeObject(senha);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
     }
 
     @Override
     public void salvarTamanhoSenhaNormal(Integer tamanho) {
-        try (ObjectOutputStream output= new ObjectOutputStream(new FileOutputStream(file))){
-            output.writeObject(tamanho);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
+        salvaObjeto(tamanho);
     }
 
     @Override
@@ -73,5 +64,13 @@ public class SenhaRepositoryImpl implements SenhaRepository {
     @Override
     public Integer recuperarTamanhoSenhaPreferencial() {
         return 5;
+    }
+
+    private void salvaObjeto(Object obj) {
+        try (ObjectOutputStream output= new ObjectOutputStream(new FileOutputStream(file))){
+            output.writeObject(obj);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 }

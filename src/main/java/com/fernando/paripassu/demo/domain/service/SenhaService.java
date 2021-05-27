@@ -92,18 +92,20 @@ public class SenhaService {
         Integer tamanhoSenhaPReferencial = senhaRepository.recuperarTamanhoSenhaPreferencial();
 
         if(tamanhoSenhaNormal != null) {
-            var senhaNormal = senhaRepository.recuperarUltimaSenhaNormalChamada().getSenha();
-            senhaListNormal.restaurar((Integer)senhaNormal,
-                    senhaRepository.recuperarTamanhoSenhaNormal());
+            restauraFila(senhaRepository.recuperarUltimaSenhaNormalChamada(), senhaListNormal, senhaRepository.recuperarTamanhoSenhaNormal());
         }
 
         if(tamanhoSenhaPReferencial != null) {
-            var senhaPreferencial = senhaRepository.recuperarUltimaSenhaPreferencialChamada().getSenha();
-            senhaListPreferencial.restaurar((Integer)senhaPreferencial,
-                    senhaRepository.recuperarTamanhoSenhaPreferencial());
+            restauraFila(senhaRepository.recuperarUltimaSenhaPreferencialChamada(), senhaListPreferencial, senhaRepository.recuperarTamanhoSenhaPreferencial());
         }
 
 
+    }
+
+    private void restauraFila(Senha senha, SenhaList<Integer> senhaListNormal, Integer integer) {
+        var senhaNormal = senha.getSenha();
+        senhaListNormal.restaurar((Integer) senhaNormal,
+                integer);
     }
 
     public Senha<?> ultimaChamada(String tipoSenhaInput) {
