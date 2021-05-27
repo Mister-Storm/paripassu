@@ -8,27 +8,28 @@ import com.fernando.paripassu.demo.domain.model.Senha;
 import com.fernando.paripassu.demo.domain.repository.SenhaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
 
-public class SenhaProvider implements SenhaRepository {
+public class SenhaRepositoryImpl implements SenhaRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SenhaProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SenhaRepositoryImpl.class);
 
-    private ObjectOutputStream output;
+    @Value("${arquivo}")
+    String path;//= "/home/fernando/Downloads/senhasProvider.txt";
 
-    public SenhaProvider() {
-        File file = new File("/home/fernando/Downloads/senhasProvider.txt");
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(file));
-        } catch (IOException e ) {
-            LOGGER.error(e.getMessage());
-            // lançar exceção aqui.....
-        }
+    File file;
+
+    public void iniciarFile() {
+        file = new File(path);
     }
     @Override
     public void salvarUltimaChamada(Senha<?> senha) {
-        try {
+
+
+
+        try (ObjectOutputStream output= new ObjectOutputStream(new FileOutputStream(file))){
             output.writeObject(senha);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -37,7 +38,7 @@ public class SenhaProvider implements SenhaRepository {
 
     @Override
     public void salvarTamanhoSenhaNormal(Integer tamanho) {
-        try {
+        try (ObjectOutputStream output= new ObjectOutputStream(new FileOutputStream(file))){
             output.writeObject(tamanho);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());

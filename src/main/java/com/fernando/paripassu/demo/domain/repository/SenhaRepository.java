@@ -5,10 +5,9 @@ import com.fernando.paripassu.demo.domain.exception.TipoUsuarioEnumException;
 import com.fernando.paripassu.demo.domain.model.IUsuario;
 import com.fernando.paripassu.demo.domain.model.Senha;
 
-import javax.inject.Named;
-
-@Named
 public interface SenhaRepository {
+
+    void iniciarFile();
 
     void salvarUltimaChamada(Senha<?> senha);
 
